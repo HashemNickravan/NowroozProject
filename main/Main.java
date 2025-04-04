@@ -1,19 +1,21 @@
-import db.Database;
-import db.exception.EntityNotFoundException;
-import example.Human;
+package main;
+
+import main.db.Database;
+import main.db.exception.EntityNotFoundException;
+import main.example.Human;
 
 public class Main {
     public static void main(String[] args) {
         Human[] humans = {
                 new Human("Gholi"),
                 new Human("Jamshid"),
-                new Human("Akbar"),
+                new Human("Akbar")
         };
 
         System.out.println("#### Test add method ####");
         for (Human h : humans) {
             System.out.println("Adding " + h.name + " to the database.");
-            Database.add(h);
+            Database.add(h); // همین خط کافی است!
         }
 
         for (Human h : humans) {
@@ -23,7 +25,7 @@ public class Main {
         System.out.println("\n#### Test get method ####");
         int gholiId = humans[0].id;
         Human gholi = (Human) Database.get(gholiId);
-        System.out.println("Successfully got " + gholi.name + " from the database.");
+        System.out.println("successfully got " + gholi.name + " from the database.");
 
         System.out.println("\n#### Test update method ####");
         gholi.name = "Gholi Mohammadi";

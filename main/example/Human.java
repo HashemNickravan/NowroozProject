@@ -1,6 +1,6 @@
-package example;
+package main.example;
 
-import db.Entity;
+import main.db.Entity;
 
 public class Human extends Entity {
     public String name;

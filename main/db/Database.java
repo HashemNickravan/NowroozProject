@@ -1,6 +1,6 @@
-package db;
+package main.db;
 
-import db.exception.EntityNotFoundException;
+import main.db.exception.EntityNotFoundException;
 import java.util.ArrayList;
 
 public class Database {
@@ -11,8 +11,8 @@ public class Database {
 
     public static void add(Entity e) {
         lastId++;
+        e.id = lastId;
         Entity copy = e.copy();
-        copy.id = lastId;
         entities.add(copy);
     }
 
