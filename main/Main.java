@@ -1,45 +1,17 @@
 package main;
 
 import main.db.Database;
-import main.db.exception.EntityNotFoundException;
 import main.example.Human;
 
 public class Main {
     public static void main(String[] args) {
-        Human[] humans = {
-                new Human("Gholi"),
-                new Human("Jamshid"),
-                new Human("Akbar")
-        };
+        Human ali = new Human("Ali");
+        Database.add(ali);
 
-        System.out.println("#### Test add method ####");
-        for (Human h : humans) {
-            System.out.println("Adding " + h.name + " to the database.");
-            Database.add(h); // همین خط کافی است!
-        }
+        ali.name = "Ali Hosseini";
 
-        for (Human h : humans) {
-            System.out.println("Id of \"" + h.name + "\" is " + h.id + ".");
-        }
+        Human aliFromTheDatabase = (Human) Database.get(ali.id);
 
-        System.out.println("\n#### Test get method ####");
-        int gholiId = humans[0].id;
-        Human gholi = (Human) Database.get(gholiId);
-        System.out.println("successfully got " + gholi.name + " from the database.");
-
-        System.out.println("\n#### Test update method ####");
-        gholi.name = "Gholi Mohammadi";
-        Database.update(gholi);
-        Human gholiAgain = (Human) Database.get(gholiId);
-        System.out.println("Updated name: \"" + gholiAgain.name + "\".");
-
-        System.out.println("\n#### Test delete method ####");
-        int jamshidId = humans[1].id;
-        Database.delete(jamshidId);
-        try {
-            Human jamshid = (Human) Database.get(jamshidId);
-        } catch (EntityNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
+        System.out.println("ali's name in the database: " + aliFromTheDatabase.name);
     }
 }
