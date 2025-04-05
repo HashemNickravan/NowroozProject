@@ -12,7 +12,7 @@ public class HumanValidator implements Validator {
         }
         Human human = (Human) entity;
         if (human.age < 0) {
-            throw new InvalidEntityException("Age must be greater than or equal to zero");
+            throw new InvalidEntityException("Age must be a positive integer");
         }
         if (human.name == null || human.name.trim().isEmpty()) {
             throw new InvalidEntityException("Name cannot be null or empty");
