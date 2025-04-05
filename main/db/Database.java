@@ -17,7 +17,7 @@ public class Database {
         validators.put(entityCode, validator);
     }
 
-    public static void add(Entity e) {
+    public static void add(Entity e) throws InvalidEntityException {
         Validator validator = validators.get(e.getEntityCode());
         if (validator == null) {
             throw new IllegalStateException("No validator registered for entity code: " + e.getEntityCode());
@@ -29,7 +29,7 @@ public class Database {
         entities.add(e.copy());
     }
 
-    public static void update(Entity e) {
+    public static void update(Entity e) throws InvalidEntityException {
         Validator validator = validators.get(e.getEntityCode());
         if (validator == null) {
             throw new IllegalStateException("No validator registered for entity code: " + e.getEntityCode());
