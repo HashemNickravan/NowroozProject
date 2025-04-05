@@ -1,41 +1,41 @@
 package main.db;
 
 import main.db.exception.EntityNotFoundException;
+import main.db.exception.InvalidEntityException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Database {
     private static ArrayList<Entity> entities = new ArrayList<>();
     private static int lastId = 0;
+    private static HashMap<Integer, Validator> validators = new HashMap<>();
 
-    private Database() {}
+    public static void registerValidator(int entityCode, Validator validator) {
+        if (validators.containsKey(entityCode)) {
+            throw new IllegalArgumentException("Validator already exists for entity code: " + entityCode);
+        }
+        validators.put(entityCode, validator);
+    }
 
     public static void add(Entity e) {
+        Validator validator = validators.get(e.getEntityCode());
+        if (validator == null) {
+            throw new IllegalStateException("No validator registered for entity code: " + e.getEntityCode());
+        }
+        validator.validate(e);
+
         lastId++;
         e.id = lastId;
-        Entity copy = e.copy();
-        entities.add(copy);
-    }
-
-    public static Entity get(int id) {
-        for (Entity entity : entities) {
-            if (entity.id == id) {
-                return entity.copy();
-            }
-        }
-        throw new EntityNotFoundException(id);
-    }
-
-    public static void delete(int id) {
-        for (int i = 0; i < entities.size(); i++) {
-            if (entities.get(i).id == id) {
-                entities.remove(i);
-                return;
-            }
-        }
-        throw new EntityNotFoundException(id);
+        entities.add(e.copy());
     }
 
     public static void update(Entity e) {
+        Validator validator = validators.get(e.getEntityCode());
+        if (validator == null) {
+            throw new IllegalStateException("No validator registered for entity code: " + e.getEntityCode());
+        }
+        validator.validate(e);
+
         for (int i = 0; i < entities.size(); i++) {
             if (entities.get(i).id == e.id) {
                 entities.set(i, e.copy());
