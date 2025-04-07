@@ -20,10 +20,10 @@ public class Database {
 
     public static void add(Entity e) throws InvalidEntityException {
         Validator validator = validators.get(e.getEntityCode());
-        if (validator == null) {
-            throw new IllegalStateException("No validator registered for entity code: " + e.getEntityCode());
+
+        if (validator != null) {
+            validator.validate(e);
         }
-        validator.validate(e);
 
         if (e instanceof Trackable) {
             Trackable trackable = (Trackable) e;
@@ -39,10 +39,10 @@ public class Database {
 
     public static void update(Entity e) throws InvalidEntityException {
         Validator validator = validators.get(e.getEntityCode());
-        if (validator == null) {
-            throw new IllegalStateException("No validator registered for entity code: " + e.getEntityCode());
+
+        if (validator != null) {
+            validator.validate(e);
         }
-        validator.validate(e);
 
         if (e instanceof Trackable) {
             Trackable trackable = (Trackable) e;
