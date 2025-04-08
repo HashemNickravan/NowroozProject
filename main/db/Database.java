@@ -68,4 +68,28 @@ public class Database {
         }
         return result;
     }
+
+    public static Entity get(int id) throws EntityNotFoundException {
+        for (Entity entity : entities) {
+            if (entity.id == id) {
+                return entity.copy();
+            }
+        }
+        throw new EntityNotFoundException(id);
+    }
+
+    public static void delete(int id) throws EntityNotFoundException {
+        Entity toRemove = null;
+        for (Entity entity : entities) {
+            if (entity.id == id) {
+                toRemove = entity;
+                break;
+            }
+        }
+        if (toRemove != null) {
+            entities.remove(toRemove);
+        } else {
+            throw new EntityNotFoundException(id);
+        }
+    }
 }
