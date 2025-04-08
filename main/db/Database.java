@@ -5,6 +5,7 @@ import main.db.exception.InvalidEntityException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class Database {
     private static ArrayList<Entity> entities = new ArrayList<>();
@@ -56,5 +57,15 @@ public class Database {
             }
         }
         throw new EntityNotFoundException(e.id);
+    }
+
+    public static List<Entity> getAll(int entityCode) {
+        List<Entity> result = new ArrayList<>();
+        for (Entity entity : entities) {
+            if (entity.getEntityCode() == entityCode) {
+                result.add(entity.copy());
+            }
+        }
+        return result;
     }
 }
