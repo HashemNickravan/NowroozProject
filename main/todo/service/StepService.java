@@ -1,10 +1,9 @@
 package main.todo.service;
 
-import database.Database;
-import todo.entity.Step;
-import todo.entity.Step.Status;
-import todo.entity.Task;
-import java.util.Date;
+import main.db.Database;
+import main.db.exception.InvalidEntityException;
+import main.todo.entity.Step;
+import main.todo.entity.Step.Status;
 
 public class StepService {
     public static Step createStep(int taskRef, String title) {
@@ -14,14 +13,12 @@ public class StepService {
         step.setStatus(Status.NotStarted);
 
         try {
-            Database.save(step, new StepValidator());
+            Database.add(step);
             return step;
-        } catch (Exception e) {
+        } catch (InvalidEntityException e) {
             System.out.println("Cannot save step.");
             System.out.println("Error: " + e.getMessage());
             return null;
         }
     }
-
-    // Other methods will be added here
 }
