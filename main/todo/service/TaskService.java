@@ -1,9 +1,10 @@
 package main.todo.service;
 
-import database.Database;
-import todo.entity.Task;
-import todo.entity.Task.Status;
-import java.util.ArrayList;
+import main.db.Database;
+import main.db.exception.EntityNotFoundException;
+import main.db.exception.InvalidEntityException;
+import main.todo.entity.Task;
+import main.todo.entity.Task.Status;
 import java.util.Date;
 
 public class TaskService {
@@ -15,9 +16,9 @@ public class TaskService {
         task.setStatus(Status.NotStarted);
 
         try {
-            Database.save(task, new TaskValidator());
+            Database.add(task);
             return task;
-        } catch (Exception e) {
+        } catch (InvalidEntityException e) {
             System.out.println("Cannot save task.");
             System.out.println("Error: " + e.getMessage());
             return null;
@@ -25,11 +26,14 @@ public class TaskService {
     }
 
     public static void setAsCompleted(int taskId) {
-        Task task = (Task) Database.get(taskId);
-        if (task != null) {
+        try {
+            Task task = (Task) Database.get(taskId);
             task.setStatus(Status.Completed);
             Database.update(task);
+        } catch (EntityNotFoundException e) {
+            System.out.println("Error: Task not found with ID: " + taskId);
+        } catch (InvalidEntityException e) {
+            System.out.println("Error updating task: " + e.getMessage());
         }
     }
-
 }
