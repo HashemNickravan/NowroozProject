@@ -1,20 +1,29 @@
 package main.todo.validator;
 
-import database.Validator;
-import todo.entity.Task;
-import java.util.Date;
+import main.db.Validator;
+import main.db.Entity;
+import main.todo.entity.Task;
+import main.db.exception.InvalidEntityException;
 
 public class TaskValidator implements Validator {
     @Override
-    public void validate(Object entity) throws IllegalArgumentException {
+    public void validate(Entity entity) throws InvalidEntityException {
         if (!(entity instanceof Task)) {
-            throw new IllegalArgumentException("Entity must be of type Task");
+            throw new InvalidEntityException("Entity must be of type Task");
         }
 
         Task task = (Task) entity;
 
         if (task.getTitle() == null || task.getTitle().trim().isEmpty()) {
-            throw new IllegalArgumentException("Task title cannot be empty");
+            throw new InvalidEntityException("Task title cannot be empty");
+        }
+
+        if (task.getDueDate() == null) {
+            throw new InvalidEntityException("Due date is required");
+        }
+
+        if (task.getStatus() == null) {
+            throw new InvalidEntityException("Status is required");
         }
     }
 }
